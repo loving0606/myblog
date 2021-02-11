@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title></title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src="https://cdn.bootcss.com/vue/2.2.2/vue.min.js"></script>
+    <!--vue.min.js的库-->
+    <script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+    <script src="//apps.bdimg.com/libs/jqueryui/1.10.4/jquery-ui.min.js"></script>
+    <style>
+        body {
+            font-size: 14px;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0
+        }
+        
+        .apple {
+            width: 100px;
+            height: 100px;
+            background: pink;
+        }
+        
+        table {
+            width: 90%;
+            border: 1px solid #eee;
+        }
+        
+        tr,
+        td {
+            border: 1px solid #ccc;
+            height: 25px;
+            line-height: 25px;
+            text-indent: 2em;
+        }
+        
+        tr.title {
+            text-align: center;
+            font-size: 20px;
+            height: 35px;
+        }
+    </style>
+
+</head>
+
+<body>
+    <div id="main">
+        <table border="0" cellpadding="0" cellspacing="0" id='table1'>
+            <tr class="title">
+                <th>机型</th>
+                <th>屏幕尺寸</th>
+                <th>容量</th>
+                <th>颜色</th>
+                <th>机器代码</th>
+                <th>价格</th>
+                <th>到货周期</th>
+            </tr>
+            <tr v-for='(value, key, index) in datas'>
+                <td v-for="item in value">{{item}}</td>
+            </tr>
+        </table>
+    </div>
+    <script>
+        var v = new Vue({
+            el: '#main',
+            data: {
+                datas: []
+            },
+            created: function() {
+                this.getDoodsList()
+            },
+            methods: {
+                getDoodsList() {
+                    var obj = this
+                    $.getJSON("http://127.0.0.1/iphone/iphone-12-products.json", function(result, status) {
+                        for (var i = 0; i < result.products.length; i++) {
+                            (function(i) {
+                                var temp = []
+                                var test = result.products[i].seoUrlToken
+                                var sum = test.split('-')
+                                temp.push(result.products[i].productLocatorFamily);
+                                for (var k = 0; k < sum.length; k++) {
+                                    if (k == 0) {
+                                        temp.push(sum[k] + '-英寸')
+                                    } else if (k == 2) {
+                                        temp.push(sum[k].toUpperCase())
+                                    } else if (k == 3) {
+                                        temp.push(sum[k])
+                                    }
+                                }
+                                temp.push(result.products[i].partNumber)
+                                temp.push(result.products[i].price.substring(0, result.products[i].price.length - 3))
+                                var page = result.products[i].partNumber
+                                var text = 'http://127.0.0.1/iphone/' + result.products[i].partNumber.substring(0, result.products[i].partNumber.length - 2) + '.json'
+                                $.getJSON(text, function(result, status) {
+                                    var numbers = result.body.content.deliveryMessage[page].deliveryOptionMessages[0]
+                                    temp.push(numbers)
+                                })
+                                obj.datas.push(temp)
+                            })(i)
+
+                        }
+                    });
+
+                }
+            }
+        })
+        jQuery.fn.rowspan = function(colIdx) {
+            return this.each(function() {
+                var that;
+                $('tr', this).each(function(row) {
+                    $('td:eq(' + colIdx + ')', this).filter(':visible').each(function(col) {
+                        if (that != null && $(this).html() == $(that).html()) {
+                            rowspan = $(that).attr("rowSpan");
+                            if (rowspan == undefined) {
+                                $(that).attr("rowSpan", 1);
+                                rowspan = $(that).attr("rowSpan");
+                            }
+                            rowspan = Number(rowspan) + 1;
+                            $(that).attr("rowSpan", rowspan);
+                            $(this).hide();
+                        } else {
+                            that = this;
+                        }
+                    });
+                });
+            });
+        }
+        $(function() {
+            $("#table1").rowspan(0);
+            $("#table1").rowspan(1);
+            $("#table1").rowspan(2);
+            $("#table1").rowspan(3);
+            $("#table1").rowspan(4);
+            $("#table1").rowspan(5);
+            $("#table1").rowspan(6);
+        })();
+    </script>
+</body>
+
+</html>

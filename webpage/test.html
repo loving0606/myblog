@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title></title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src="js/vue.min.js"></script>
+    <script src="js/jquery.min.js"></script>
+    <script src="js/jquery.resizableColumns.js"></script>
+    <link rel="stylesheet" href="css/index.css">
+    <script src="js/index.js"></script>
+    <link href="css/style.css" rel="stylesheet">
+</head>
+
+<body>
+    <div id="main">
+        <template>
+            <el-container>
+                <el-header>2020年新款iphone数据查询</el-header>            
+            </el-container>
+            <el-form ref="numberValidateForm">
+              <div class="check1">
+                <el-form-item label="机型：">
+                    <el-select v-model="select_jixing_data" placeholder="请选择机型" @change="select_key(0)" size="mini">
+                        <el-option v-for="item in jixing_select_key_data" :key="item" :label="item.jixing" :value="item.jixing"> 
+                        </el-option> 
+                    </el-select>
+                </el-form-item>
+                <el-form-item label="屏幕尺寸：">
+                  <el-select v-model="select_pingmu_data" placeholder="请选择屏幕尺寸" @change="select_key(1)" size="mini">
+                      <el-option v-for="item in size_select_key_data" :key="item" :label="item.size" :value="item.size"> 
+                      </el-option> 
+                  </el-select>
+              </el-form-item>
+              <el-form-item label="容量：">
+                <el-select v-model="select_rongliang_data" placeholder="请选择容量" @change="select_key(2)" size="mini">
+                    <el-option v-for="item in rongliang_select_key_data" :key="item" :label="item.rongliang" :value="item.rongliang"> 
+                    </el-option> 
+                </el-select>
+            </el-form-item>
+            <el-form-item label="颜色：">
+              <el-select v-model="select_yanse_data" placeholder="请选择颜色" @change="select_key(3)" size="mini">
+                  <el-option v-for="item in yanse_select_key_data" :key="item" :label="item.yanse" :value="item.yanse"> 
+                  </el-option> 
+              </el-select>
+          </el-form-item>
+          <el-form-item label="到货周期：">
+            <el-select v-model="select_daohuo_data" placeholder="请选择到货周期" @change="select_key(6)" size="mini">
+                <el-option v-for="item in daohuo_select_key_data" :key="item" :label="item.daohuo" :value="item.daohuo"> 
+                </el-option> 
+            </el-select>
+        </el-form-item>        
+        <el-form-item label="">
+          <el-button type="primary" @click="select_key(7)">重置</el-button>
+      </el-form-item>
+      </div>
+   <hr/>  
+  <el-form-item label="价格在：" class="price">
+    <el-col :span="5">
+    <el-input v-model="price1"  size="mini" @change="checkValue()"></el-input>
+  </el-col>
+  <el-col :span="1">--</el-col>
+  <el-col :span="5">
+    <el-input v-model="price2"  size="mini" @change="checkValue()"></el-input>
+  </el-col>
+  <el-col :span="10">
+    <el-button type="primary" @click="price_select(2)" size="mini">查询</el-button>
+    </el-col>
+  </el-form-item> 
+</el-form>
+      </template>
+        <table border="0" cellpadding="0" cellspacing="0" id="table1">
+            <tbody>
+                <tr class="title">
+                    <th>编号</th>
+                    <th @click="storts('jixing', 1)">机型</th>
+                    <th @click="storts('size', 1)">屏幕尺寸</th>
+                    <th @click="storts('rongliang',1)">容量</th>
+                    <th @click="storts('yanse', 1)">颜色</th>
+                    <th @click="storts('daima', 1)">机器代码</th>
+                    <th @click="storts('jiage', 1)">价格</th>
+                    <th @click="storts('daohuo', 1)">到货周期</th>
+                </tr>
+                <tr v-for='(value, key, index) in datas'>
+                    <td>{{key+1}}</td>
+                    <td v-for="item in value">{{item}}</td>
+                </tr>
+            </tbody>
+        </table>
+        <table border="0" cellpadding="0" cellspacing="0" id="table2">
+            <tbody>
+                <tr class="title">
+                    <th>编号</th>
+                    <th>机型</th>
+                    <th>屏幕尺寸</th>
+                    <th>容量</th>
+                    <th>颜色</th>
+                    <th>机器代码</th>
+                    <th>价格</th>
+                    <th>到货周期</th>
+                </tr>
+                <tr v-for='(value, key, index) in datas2'>
+                    <td>{{key+1}}</td>
+                    <td v-for="item in value">{{item}}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <script src="js/type.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+    <style>
+        td {
+            border: 1px solid red;
+        }
+    </style>
+</head>
+
+<body>
+    <table class="table mbn tc-med-1 tc-bold-last tc-fs13-last" id="table1">
+        <thead>
+            <tr>
+                <th>品牌</th>
+                <th>车型</th>
+                <th>性别</th>
+                <th>配额数</th>
+                <th>完成数</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>宝马</td>
+                <td>3系</td>
+                <td>男</td>
+                <td>200</td>
+                <td>100</td>
+            </tr>
+            <tr>
+                <td>宝马</td>
+                <td>3系</td>
+                <td>女</td>
+                <td>100</td>
+                <td>57</td>
+            </tr>
+            <tr>
+                <td>宝马</td>
+                <td>5系</td>
+                <td>男</td>
+                <td>100</td>
+                <td>68</td>
+            </tr>
+            <tr>
+                <td>宝马</td>
+                <td>5系</td>
+                <td>女</td>
+                <td>200</td>
+                <td>94</td>
+            </tr>
+            <tr>
+                <td>宝马</td>
+                <td>7系</td>
+                <td>男</td>
+                <td>100</td>
+                <td>68</td>
+            </tr>
+            <tr>
+                <td>宝马</td>
+                <td>7系</td>
+                <td>女</td>
+                <td>100</td>
+                <td>68</td>
+            </tr>
+        </tbody>
+    </table>
+</body>
+
+</html>
+<script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+<script src="//apps.bdimg.com/libs/jqueryui/1.10.4/jquery-ui.min.js"></script>
+<script>
+    jQuery.fn.rowspan = function(colIdx) { //封装的一个JQuery小插件
+        return this.each(function() {
+            var that;
+            $('tr', this).each(function(row) {
+                $('td:eq(' + colIdx + ')', this).filter(':visible').each(function(col) {
+                    if (that != null && $(this).html() == $(that).html()) {
+                        rowspan = $(that).attr("rowSpan");
+                        if (rowspan == undefined) {
+                            $(that).attr("rowSpan", 1);
+                            rowspan = $(that).attr("rowSpan");
+                        }
+                        rowspan = Number(rowspan) + 1;
+                        $(that).attr("rowSpan", rowspan);
+                        $(this).hide();
+                    } else {
+                        that = this;
+                    }
+                });
+            });
+        });
+    }
+    $(function() {
+        alert(235)
+        $("#table1").rowspan(0); //传入的参数是对应的列数从0开始
+        $("#table1").rowspan(1);
+        $("#table1").rowspan(2);
+        $("#table1").rowspan(3);
+    })();
+</script>
